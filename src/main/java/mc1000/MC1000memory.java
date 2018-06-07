@@ -1,3 +1,6 @@
+package mc1000;
+
+
 import javax.imageio.stream.FileImageInputStream;
 import java.io.*;
 import java.lang.*;

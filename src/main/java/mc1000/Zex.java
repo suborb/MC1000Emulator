@@ -1,3 +1,5 @@
+package mc1000;
+
 import java.io.*;
 import java.math.BigInteger;
 
@@ -90,7 +92,7 @@ class myports implements Ports {
 }
 
 public class Zex {
-    static Z80 core;
+    static Cpu core;
 
     public static void main(String[] argv) {
 
@@ -99,7 +101,7 @@ public class Zex {
         mac.ports = new myports();
         mac.memory = new mymemory();
 
-        core = new Z80(mac, false,0x100);
+        core = new Z80Wrap(mac,0x100);
         while (true) core.run(59600);
     }
 }

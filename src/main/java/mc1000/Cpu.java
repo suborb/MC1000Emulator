@@ -1,3 +1,4 @@
+package mc1000;
 
 
 public interface Cpu

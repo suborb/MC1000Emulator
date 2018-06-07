@@ -1,3 +1,6 @@
+package mc1000;
+
+
 /* Z80 cpu core - Written from scratch by Romain Tisserand */
 
 /* Bugs fixed by Ricardo Bittencourt */
@@ -60,7 +63,7 @@ public final class Z80 implements Cpu {
   }
 
   public void dump() {
-    System.out.println("PC=" + Integer.toHexString(PC));
+    System.out.println(String.format("PC=%04x HL=%04x DE=%04X BC=%04x AF=%04x\nSP=%04x HL=%04x DE=%04x BC=%04x AF=%04x\n", PC, HL, DE, BC, AF, SP, HL2, DE2, BC2, AF2));
   }
    
   public final void start() {
@@ -567,7 +570,7 @@ public final class Z80 implements Cpu {
         | (((sum & 0xffff) == 0 ? 1 : 0) << 6)
         | (((cbits >> 6) ^ (cbits >> 5)) & 4) | (cbits & 0x10) | 2
         | ((cbits >> 8) & 1);
-
+      CARRY_FLAG(sum, 16);
   }
    
   private final void ADC_HL(int x) { 
@@ -581,6 +584,7 @@ public final class Z80 implements Cpu {
         | (((sum & 0xffff) == 0 ? 1 : 0) << 6)
         | (((cbits >> 6) ^ (cbits >> 5)) & 4) | (cbits & 0x10)
         | ((cbits >> 8) & 1);
+      CARRY_FLAG(sum, 16);
 
   }
 
@@ -5038,6 +5042,7 @@ public final class Z80 implements Cpu {
       
     while (cyclesToDo > 0) {
       UpdateR();
+    //  dump();
          
       // Accepts interrupts the intruction AFTER EI
       switch (enable) {

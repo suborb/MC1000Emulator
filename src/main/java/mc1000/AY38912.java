@@ -1,5 +1,9 @@
+package mc1000;
+
+
 import java.awt.event.*;
 import java.math.*;
+
 
 public class AY38912 {
   int regs[];

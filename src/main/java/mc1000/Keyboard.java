@@ -1,3 +1,6 @@
+package mc1000;
+
+
 import java.awt.event.*;
 
 public class Keyboard implements KeyListener {

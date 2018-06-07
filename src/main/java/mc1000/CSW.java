@@ -1,3 +1,6 @@
+package mc1000;
+
+
 import java.applet.Applet;
 import java.io.*;
 import java.util.*;
