@@ -11,6 +11,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class MC1000emu extends Panel implements ActionListener {
     MC1000machine machine;
     Timer timer;
+    private String currentProgram;
 
     public MC1000emu() {
     }
@@ -93,6 +94,11 @@ public class MC1000emu extends Panel implements ActionListener {
             }
         });
         fileMenu.add(loadItem);
+        MenuItem reloadItem = new MenuItem("Reload last binary");
+        reloadItem.addActionListener((e) -> {
+            emu.reload();
+        });
+        fileMenu.add(reloadItem);
 //        MenuItem tapeItem = new MenuItem("Load Tape");
 //        tapeItem.addActionListener( (e) -> {
 //            JFileChooser chooser = new JFileChooser();
@@ -138,8 +144,15 @@ public class MC1000emu extends Panel implements ActionListener {
         }
     }
 
+    private void reload() {
+        if ( currentProgram != null) {
+            loadFile(currentProgram);
+        }
+    }
+
     private void loadFile(String absolutePath) {
         try {
+            currentProgram = absolutePath;
             machine.memory.loadProgram(absolutePath);
         } catch (IOException e) {
             e.printStackTrace();
