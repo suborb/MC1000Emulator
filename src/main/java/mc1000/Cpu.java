@@ -3,8 +3,8 @@ package mc1000;
 
 public interface Cpu
 {
- public void run(int nbCycles);
- public void start();
- public void stop();
- public void reset(int startAddr);
+  void run(int nbCycles);
+  void start();
+  void stop();
+  void reset(int startAddr);
 }

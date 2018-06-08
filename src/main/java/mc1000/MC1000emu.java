@@ -109,6 +109,14 @@ public class MC1000emu extends Panel implements ActionListener {
         quitItem.addActionListener( (e) -> System.exit(0));
         fileMenu.add(quitItem);
         menuBar.add(fileMenu);
+
+        Menu machineMenu = new Menu("Machine");
+        MenuItem resetItem = new MenuItem("Reset");
+        resetItem.addActionListener( (e) -> {
+            emu.reset();
+        });
+        machineMenu.add(resetItem);
+        menuBar.add(machineMenu);
         f.setMenuBar(menuBar);
 
 
@@ -136,6 +144,12 @@ public class MC1000emu extends Panel implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void reset() {
+        machine.z80core.stop();
+        machine.z80core.reset(0xc000);
+        machine.z80core.stop();
     }
 
 }
