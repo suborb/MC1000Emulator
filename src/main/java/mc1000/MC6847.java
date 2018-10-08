@@ -61,7 +61,10 @@ public class MC6847 {
 
             switch (mode & 0xFC) {
                 case 0x88:
-                    image = drawGR();
+                    image = drawGR(64);
+                    break;
+                case 0x98:
+                    image = drawGR(192);
                     break;
                 case 0x9C:
                     image = drawHGR();
@@ -92,7 +95,7 @@ public class MC6847 {
         return image;
     }
 
-    public BufferedImage drawGR() {
+    public BufferedImage drawGR(int rows) {
         int i, j, ii, c, posput;
         int colorGR0[] = {opaqueGreen, opaqueYellow, opaqueBlue, opaqueRed};
         int colorGR1[] = {opaqueWhite, opaqueCyan, opaqueMagenta, opaqueOrange};
@@ -100,27 +103,30 @@ public class MC6847 {
 
         colorGR = (mode & 2) == 0 ? colorGR0 : colorGR1;
 
-        for (j = 0; j < 64; j++)
+        for (j = 0; j < rows; j++) {
+            posput = j * 256;
             for (i = 0; i < 32; i++) {
                 c = vram[(j << 5) + i];
-                posput = j * 768 + (i << 3);
-                for (ii = 0; ii < 4; ii++) {
-                    rgbdata[posput + 0 + 0 * 256] =
-                            rgbdata[posput + 1 + 0 * 256] =
-                                    rgbdata[posput + 0 + 1 * 256] =
-                                            rgbdata[posput + 1 + 1 * 256] =
-                                                    rgbdata[posput + 0 + 2 * 256] =
-                                                            rgbdata[posput + 1 + 2 * 256] =
-                                                                    colorGR[(c >> (6 - ii * 2)) & 3];
-                    posput += 2;
-                }
+
+                rgbdata[posput + 0] = rgbdata[posput + 1] = colorGR[((c >> 6) & 3)];
+                rgbdata[posput + 2] = rgbdata[posput + 3] = colorGR[((c >> 4) & 3)];
+                rgbdata[posput + 4] = rgbdata[posput + 5] = colorGR[((c >> 2) & 3)];
+                rgbdata[posput + 6] = rgbdata[posput + 7] = colorGR[((c >> 0) & 3)];
+                posput += 8;
             }
+        }
         buffer.setRGB(0, 0, 256, 192, rgbdata, 0, 256);
         return buffer;
     }
 
     public BufferedImage drawHGR() {
-        int i, j, ii, c, posput, colorHGR[] = {opaqueBlack, opaqueGreen};
+        int i, j, ii, c, posput;
+        int colorHGR0[] = {opaqueDarkGreen, opaqueGreen};
+        int colorHGR1[] = {opaqueBlack, opaqueWhite};
+        int colorHGR[];
+
+        colorHGR = (mode & 2) == 0 ? colorHGR0 : colorHGR1;
+
         for (j = 0; j < 192; j++)
             for (i = 0; i < 32; i++) {
                 c = vram[(j << 5) + i];
